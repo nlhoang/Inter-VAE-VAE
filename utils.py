@@ -1,3 +1,4 @@
+import random
 import sys
 import os
 import shutil
@@ -23,10 +24,15 @@ class Logger(object):
         self.log.write(message)
 
     def flush(self):
-        # this flush method is needed for python 3 compatibility.
-        # this handles the flush command by doing nothing.
-        # you might want to specify some extra behavior here.
         pass
+
+
+def set_seeds(seed):
+    if seed == -1:
+        seed = random.randint(1, 100)
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    print('Seed: {:.2g}'.format(seed))
 
 
 class DsrpitesDataset(Dataset):
@@ -47,12 +53,12 @@ class DsrpitesDataset(Dataset):
 
 
 class Shapes3DDataset(Dataset):
-    def __init__(self, npy_files):
+    def __init__(self, npy_files, resnet=False):
         self.data = np.concatenate([np.load(file) for file in npy_files], axis=0)
         self.transform = transforms.Compose([
-            transforms.Resize((224, 224)),
+            transforms.Resize((224, 224) if resnet else (64, 64)),
             transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+            transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
         ])
 
     def __len__(self):

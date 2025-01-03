@@ -1,3 +1,3 @@
-# inter-vae-vae-com-gen
+# inter-vae+vae
 
-Source code for the "Compositionality and Generalization in Emergent Communication using Metropolis-Hastings Naming Game"
+Source code for the "Compositional Generalization in Emergent Communication using Metropolis-Hastings Naming Game"
